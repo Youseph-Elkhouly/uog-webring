@@ -14,7 +14,12 @@ Live site: [uoguelph.network](https://uoguelph.network)
 {
   "name": "Your Name",
   "website": "https://your-website.com",
-  "year": 20XX
+  "year": 20XX,
+  "links": {
+    "instagram": "https://instagram.com/your-handle",
+    "twitter": "https://x.com/your-handle",
+    "linkedin": "https://linkedin.com/in/your-handle"
+  }
 }
 ```
 

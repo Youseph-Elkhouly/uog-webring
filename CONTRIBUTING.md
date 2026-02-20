@@ -11,7 +11,12 @@ Thanks for contributing.
 {
   "name": "Your Name",
   "year": 20XX,
-  "website": "https://your-site.com"
+  "website": "https://your-site.com",
+  "links": {
+    "instagram": "https://instagram.com/your-handle",
+    "twitter": "https://x.com/your-handle",
+    "linkedin": "https://linkedin.com/in/your-handle"
+  }
 }
 ```
 

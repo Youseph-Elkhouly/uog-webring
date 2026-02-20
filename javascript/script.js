@@ -4,12 +4,40 @@ let logConsoleMessage = () => {
   console.log(
     "%c👋 Hey there" +
       "\n\n%cLooks like you're poking around in the console. Why not add your site to the webring?" +
-      "\n\n%c→ https://github.com/JusGu/uwatering",
+      "\n\n%c→ https://github.com/faizm19/uog-webring",
     "font-size: 18px; font-weight: bold; color: #FF3366;",
     "font-size: 14px; color: #00FF00;",
     "font-size: 14px; color: #3399FF; text-decoration: underline;"
   );
 };
+
+const socialIconSvg = (type) => {
+  if (type === "instagram") {
+    return `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5Zm8.9 1.15a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/></svg>`;
+  }
+  if (type === "twitter") {
+    return `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M18.24 2h3.27l-7.14 8.16L22.77 22h-6.57l-5.15-6.73L5.16 22H1.88l7.63-8.72L1.5 2h6.73l4.65 6.14L18.24 2Zm-1.15 18h1.81L7.25 3.9H5.3L17.1 20Z"/></svg>`;
+  }
+  if (type === "linkedin") {
+    return `<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3A1.97 1.97 0 1 0 5.3 6.94 1.97 1.97 0 0 0 5.25 3ZM20.44 12.86c0-3.06-1.63-4.48-3.8-4.48-1.75 0-2.53.96-2.97 1.63V8.5h-3.38V20h3.38v-5.7c0-1.5.28-2.95 2.14-2.95 1.84 0 1.87 1.72 1.87 3.05V20h3.38v-7.14Z"/></svg>`;
+  }
+  return "";
+};
+
+const createSocialLink = (type, url, isSearchItem) => {
+  if (!url || typeof url !== "string" || url.trim() === "") return null;
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.target = "_blank";
+  a.rel = "noopener noreferrer";
+  a.title = type === "twitter" ? "Twitter/X" : type[0].toUpperCase() + type.slice(1);
+  a.className = "inline-flex items-center";
+  a.style.color = isSearchItem ? "#F6E8C7" : "#D1892B";
+  a.innerHTML = socialIconSvg(type);
+  return a;
+};
+
 let createWebringList = (matchedSiteIndices) => {
   const webringList = document.getElementById("webring-list");
   webringList.innerHTML = "";
@@ -19,8 +47,8 @@ let createWebringList = (matchedSiteIndices) => {
   webringData.sites.forEach((site, index) => {
     const displayUrl = formatUrl(site.website);
 
-    const listItem = document.createElement("div");
-    listItem.className = "grid grid-cols-12 sm:grid-cols-6 gap-3 sm:gap-6";
+    const listItem = document.createElement("tr");
+    listItem.className = "align-middle";
     const isSearchItem =
       matchedSiteIndices.includes(index) &&
       matchedSiteIndices.length !== webringData.sites.length;
@@ -32,34 +60,59 @@ let createWebringList = (matchedSiteIndices) => {
       firstHighlightedItem = listItem;
     }
 
-    const name = document.createElement("span");
-    name.className = "col-span-5 sm:col-span-3 font-latinRomanCaps truncate";
+    const name = document.createElement("td");
+    name.className = "pr-4 py-1 font-latinRomanCaps truncate";
     name.textContent = site.name;
     if (isSearchItem) {
-      name.className += " text-mustard-100"
+      name.className += " text-mustard-100";
     }
 
-    const year = document.createElement("span");
-    year.className = "col-span-2 sm:col-span-1 text-right font-latinRoman";
+    const year = document.createElement("td");
+    year.className = "pr-4 py-1 text-left font-latinRoman";
     year.textContent = site.year;
     if (isSearchItem) {
-      year.className += " text-mustard-100"
+      year.className += " text-mustard-100";
     }
+
+    const urlCell = document.createElement("td");
+    urlCell.className = "pr-6 py-1";
 
     const link = document.createElement("a");
     link.href = site.website;
-    link.className =
-      "col-span-5 sm:col-span-2 font-latinMonoRegular underline truncate";
+    link.className = "font-latinMonoRegular underline";
     link.textContent = displayUrl;
     if (isSearchItem) {
-      link.className += " text-mustard-100"
+      link.className += " text-mustard-100";
     } else {
-      link.className += " text-mustard-500"
+      link.className += " text-mustard-500";
     }
+    urlCell.appendChild(link);
+
+    const linksCell = document.createElement("td");
+    linksCell.className = "pl-6 py-1";
+
+    const links = document.createElement("div");
+    links.className = "flex items-center gap-2";
+
+    const instagramLink = createSocialLink("instagram", site?.links?.instagram, isSearchItem);
+    const twitterLink = createSocialLink("twitter", site?.links?.twitter, isSearchItem);
+    const linkedinLink = createSocialLink("linkedin", site?.links?.linkedin, isSearchItem);
+    if (instagramLink) links.appendChild(instagramLink);
+    if (twitterLink) links.appendChild(twitterLink);
+    if (linkedinLink) links.appendChild(linkedinLink);
+    if (!instagramLink && !twitterLink && !linkedinLink) {
+      const empty = document.createElement("span");
+      empty.textContent = "—";
+      empty.className = "font-latinMonoRegular";
+      empty.style.color = isSearchItem ? "#F6E8C7" : "#9f8f73";
+      links.appendChild(empty);
+    }
+    linksCell.appendChild(links);
 
     listItem.appendChild(name);
     listItem.appendChild(year);
-    listItem.appendChild(link);
+    listItem.appendChild(urlCell);
+    listItem.appendChild(linksCell);
     webringList.appendChild(listItem);
   });
 
@@ -86,7 +139,10 @@ function filterWebring(searchTerm) {
     if (
       site.name.toLowerCase().includes(searchLower) ||
       fuzzyMatch(site.website.toLowerCase(), searchLower) ||
-      site.year.toString().includes(searchLower)
+      site.year.toString().includes(searchLower) ||
+      (site?.links?.instagram || "").toLowerCase().includes(searchLower) ||
+      (site?.links?.twitter || "").toLowerCase().includes(searchLower) ||
+      (site?.links?.linkedin || "").toLowerCase().includes(searchLower)
     ) {
       matchedSiteIndices.push(index);
     }
