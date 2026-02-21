@@ -15,6 +15,18 @@ module.exports = {
         lion: "Times New Roman, Times, serif",
       },
       colors: {
+        sage: {
+          50: "#F4F8F4",
+          100: "#EAF1EA",
+          300: "#C7D8C8",
+        },
+        mist: {
+          100: "#F6FAF9",
+          300: "#DDECEA",
+        },
+        moss: {
+          500: "#4B6B57",
+        },
         mustard: {
           500: "#B26500",
           400: "#DAAD30",

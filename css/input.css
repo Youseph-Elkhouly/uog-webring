@@ -43,3 +43,33 @@
     font-style: italic;
   }
 }
+
+@layer components {
+  .bg-organic-light {
+    background-color: #f4f8f4;
+    position: relative;
+    isolation: isolate;
+  }
+
+  .bg-organic-light::before,
+  .bg-organic-light::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -30;
+    pointer-events: none;
+    background-repeat: no-repeat;
+  }
+
+  .bg-organic-light::before {
+    background-image:
+      radial-gradient(circle at 14% 16%, rgba(108, 152, 127, 0.2) 0%, rgba(108, 152, 127, 0) 44%),
+      radial-gradient(circle at 82% 14%, rgba(160, 201, 191, 0.22) 0%, rgba(160, 201, 191, 0) 45%);
+  }
+
+  .bg-organic-light::after {
+    background-image:
+      radial-gradient(circle at 70% 78%, rgba(129, 173, 146, 0.2) 0%, rgba(129, 173, 146, 0) 48%),
+      radial-gradient(circle at 18% 86%, rgba(188, 220, 205, 0.2) 0%, rgba(188, 220, 205, 0) 46%);
+  }
+}
